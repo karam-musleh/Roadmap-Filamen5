@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\EditProfile;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -27,9 +28,24 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->unsavedChangesAlerts()
+            ->databaseTransactions()
+            ->registration()
+            ->passwordReset()
+            ->profile(EditProfile::class)
+            ->emailVerification()
+            ->emailChangeVerification()
             ->login()
+            ->darkMode(true)
+            ->brandLogo(asset('images/logo.png'))
+            ->darkModeBrandLogo(asset('images/dark-mode-logo.jpg'))
             ->colors([
-                'primary' => Color::Amber,
+                // brand color = #4397cb
+                'primary' => Color::convertToOklch('#4397cb'),
+                'gray' => Color::Slate,
+                'info' => Color::Violet,
+                'success' => Color::Green,
+                'danger' => Color::Red,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
